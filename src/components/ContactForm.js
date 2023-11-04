@@ -1,34 +1,31 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
 
-class ContactForm extends Component {
 
-  state = {
-    name: '',
-    number: '',
+const ContactForm = (props) => {
+const [name, setName] = useState('');
+const [number, setNumber] = useState('');
+
+  const newContact = (e) => {
+    'name' === e.target.name? setName(e.target.value): setNumber(e.target.value)
   };
 
-  newContact = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  addNewContact = (e) => {
+  const addNewContact = (e) => {
     e.preventDefault()
-    this.props.addNewContact(this.state);
-    this.setState( {name: '', number: ''});
+    props.addNewContact({name, number});
+    setName('');
+    setNumber('');
   };
-
-  render() {
 
     return (
-      <form onSubmit={this.addNewContact}>
+      <form onSubmit={addNewContact}>
         <label>
           Name:
           <input
             type='text'
             name='name'
-            value={this.state.name}
-            onChange={this.newContact}
+            value={name}
+            onChange={newContact}
             required
           />
         </label>
@@ -37,8 +34,8 @@ class ContactForm extends Component {
           <input
             type='tel'
             name='number'
-            value={this.state.number}
-            onChange={this.newContact}
+            value={number}
+            onChange={newContact}
             required
             placeholder='000-00-00'
           />
@@ -46,8 +43,6 @@ class ContactForm extends Component {
         <button type='submit' >Add contact</button>
       </form>
     );
-  }
 }
-
 
 export default ContactForm;
